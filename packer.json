@@ -1,0 +1,26 @@
+{
+  "builders": [{
+    "type": "amazon-ebs",
+    "region": "us-east-1",
+    "source_ami": "ami-f4cc1de2",
+    "instance_type": "g2.2xlarge",
+    "ssh_username": "ubuntu",
+    "ami_name": "tf-packer {{timestamp}}"
+  }],
+
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo apt-get update",
+      "sudo apt-get install -y python-pip",
+      "sudo pip install gitpython"
+    ]
+  },
+  {
+    "type": "salt-masterless",
+    "local_state_tree": "./salt",
+    "minion_config": "./minion"
+  }]
+}
+
